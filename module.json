@@ -16,8 +16,8 @@
         }
     ],
     "url": "https://github.com/QuantumBob/rwk-afmg",
-    "manifest": "https://github.com/QuantumBob/rwk-afmg/releases/download/0.0.1/module.json",
-    "download": "https://github.com/QuantumBob/rwk-afmg/releases/download/0.0.1/module.zip",
+    "manifest": "https://github.com/QuantumBob/rwk-afmg/releases/download/latest/module.json",
+    "download": "https://github.com/QuantumBob/rwk-afmg/releases/download/latest/module.zip",
     "dependencies": [
         {
             "name": "pin-fixer",
