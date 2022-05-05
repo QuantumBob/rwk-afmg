@@ -38,7 +38,6 @@ jobs:
     - name: Create Release
       id: create-release
       uses: ncipollo/release-action@v1
-      if: endsWith(github.ref, 'master')
       with:
         allowUpdates: true
         name: Release ${{ steps.get-version.outputs.version }}
@@ -48,11 +47,6 @@ jobs:
         artifacts: './module.zip, ./module.json'
         tag: ${{ steps.get-version.outputs.version }}
         
-
-   
-
-    
-
     # # Create a release for this specific version
     # - name: Update Release with Files
     #   id: create_version_release
