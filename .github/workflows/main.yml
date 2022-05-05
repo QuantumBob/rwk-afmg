@@ -11,9 +11,7 @@ jobs:
       - uses: actions/checkout@v2
 
       # Create a zip file with all files required by the module to add to the release
-      - name: Zip Files
-        working-directory: ./
-        run: zip -r ./module.zip ./*
+      - run: zip -r ./module.zip ./*
 
       # get version
       - name: Get Version
