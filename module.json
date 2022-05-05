@@ -1,0 +1,31 @@
+{
+    "name": "rwk-afmg",
+    "title": " RWK Unofficial Azgaar's FMG Import",
+    "description": "Import a map from Azgaar's Fantasy Map Generator into Foundry.",
+    "version": "This is auto replaced",
+    "minimumCoreVersion": "0.8.0",
+    "compatibleCoreVersion": "9",
+    "author": "Ethck & Snark (TheSnarky) + Rwk",
+    "esmodules": ["/main.js"],
+    "styles": ["/css/map.css"],
+    "languages": [
+        {
+            "lang": "en",
+            "name": "English",
+            "path": "lang/en.json"
+        }
+    ],
+    "url": "This is auto replaced",
+    "manifest": "This is auto replaced",
+    "download": "This is auto replaced",
+    "dependencies": [
+        {
+            "name": "pin-fixer",
+            "type": "module"
+        },
+        {
+            "name": "lib-wrapper",
+            "type": "module"
+        }
+    ]
+}

@@ -1,0 +1,185 @@
+.collapsible {
+    background-color: rgb(80, 80, 80);
+    color: white;
+    cursor: pointer;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 12px;
+  }
+  
+.opened, .collapsible:hover {
+    background-color: #555;
+}
+
+.rwk-icon{
+    flex: 0 0 24px;
+    font-size: large;
+}
+
+.filter{
+    align-items: center;
+}
+
+.rwk-content {
+    padding: 0 15px;
+    display: none;
+    overflow: hidden;
+    background-color: #f1f1f1;
+}
+ 
+.mapnote{
+    padding: 0 15px;
+    margin :2px;
+    overflow: hidden;
+    background-color: #f1f1f1;
+}
+
+.collapsible-item{
+    display: none;
+}
+
+input.rwk-search{
+    margin :2px;
+    background-color: #a8f9bd;
+} 
+
+.centre-text {
+      text-align: center;
+}
+
+.azgaar-foundry {
+    --color-text-dark-primary: #191813;
+    --color-border-light-highlight: #f0f0e0;
+    --color-shadow-highlight: #ff6400;
+    --color-shadow-background: #ff640066;
+}
+
+#azgaar-icon-select span,
+#azgaar-map-select span,
+#azgaar-pin-fixer-select span {
+    text-align: center;
+}
+
+#azgaar-pin-fixer-select input {
+    padding: 0px 10px 0px 10px;
+}
+
+.azgaar-foundry .span-style {
+    flex-basis: 70%;
+}
+
+.azgaar-foundry .file-picker {
+    flex: 0 0 24px;
+    line-height: 24px;
+    margin-top: 10px;
+    margin-left: 0px;
+    order: 99;
+}
+
+.azgaar-foundry #zoomDefaults{
+    background-color: #ff6400;
+}
+
+.azgaar-foundry .centre-text {
+    text-align: center;
+}
+
+.azgaar-foundry .light-border{
+    border-top: 1px dashed #494949;
+}
+
+.azgaar-foundry .slider{
+    margin-bottom: 0.5rem;;
+}
+
+.azgaar-foundry .slider-text{
+    margin-bottom: 0.1rem;
+}
+
+.azgaar-foundry .tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.azgaar-foundry .bottom-line {
+    border-bottom: 1px solid var(--color-shadow-highlight);
+    padding-bottom: 5px;
+}
+
+.azgaar-foundry input[type=checkbox]
+{
+  /* Double-sized Checkboxes */
+  -ms-transform: scale(0.5); /* IE */
+  -moz-transform: scale(0.5); /* FF */
+  -webkit-transform: scale(0.5); /* Safari and Chrome */
+  -o-transform: scale(0.5); /* Opera */
+  transform: scale(0.5);
+}
+
+.checkboxtext
+{
+  font-size: 90%;
+  display: inline;
+  padding-top: 6px;
+}
+
+.azgaar-foundry .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: #f1f0ec;
+    color: black;
+    border-radius: 1px;
+    padding: 5px;
+    line-height: 1;
+    padding-top: 3px;
+    border-style: double;
+    font-style: normal;
+    font-weight: normal;
+    font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+    font-size: 14px;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+.azgaar-foundry .tooltip .tooltiptext.left {
+    top: 0px;
+    right: 105%;
+}
+
+.azgaar-foundry .tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+.azgaar-foundry .sheet-tabs {
+    flex: 0 0 32px;
+    line-height: 32px;
+    font-size: 1.5em;
+    border-bottom: 1px solid var(--color-border-dark);
+}
+
+.azgaar-foundry .content {
+    margin-top: 1%;
+}
+
+.azgaar-foundry ul li {
+    list-style-type: none;
+}
+
+.azgaar-foundry .container {
+    height: 100%;
+    min-height: 100%;
+    margin: 0 auto;
+    list-style: none;
+}
+
+.azgaar-foundry .container #permission-groups div:first-child div li:first-child > label {
+    border: 2px groove var(--color-border-light-highlight);
+}

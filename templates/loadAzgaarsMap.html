@@ -1,0 +1,184 @@
+<form class="azgaar-foundry">
+    <nav class="sheet-tabs tabs" data-group="primary">
+        <a class="item" data-tab="main" active>
+            Main
+        </a>
+        <a class="item" data-tab="permissions">
+            Permissions
+        </a>
+    </nav>
+    <section class="content">
+        <div class="tab" data-group="primary" data-tab="main">
+            <section class="bottom-line">
+                <h3>Map Selection</h3>
+                <div id="azgaar-map-select" class="flexrow">
+                    <div class="flexcol">
+                        <label for="map">Azgaar's MAP file
+                            <span class="tooltip"><i class="fas fa-info-circle"></i>
+                            <span class=" tooltiptext right">
+                                Press the "Choose file" button to select a .map file that has been exported from Azgaar's Fantasy Map Generator.
+                            </span>
+                        </span>
+                        </label>
+                        <input id="map" title="map input" placeholder="map-input" type="file"></input>
+                    </div>
+                    <div class="flexcol">
+                        <input type="text" name="pictureMap" title="Picture Path" class="icon-path" placeholder="/maps/example.png" data-dtype="String"></input>                         
+                        <button type="button" id="picture" name="file-picker" class="file-picker" data-target="pictureMap" data-type="image"><i class="fas fa-file-import fa-fw"></i>Map Image<span class="tooltip">
+                            <i class="fas fa-info-circle"></i><span class="tooltiptext left">The picture you select can be of any format and will be set as the background image of the scene.</br>It is extremely important that if you scale the picture in FMG that you also set the Scale Factor below.</span></span></button>
+                    </div>
+                </div>
+            </section></br>
+            <section class="bottom-line">
+                <h3>MapNote Icon Selection<span class="tooltip"><i class="fas fa-info-circle"></i><span class="tooltiptext right">Here you can select which icons you want to see on the map notes that are created for each type of note.</span></span></h3>
+                <div id="azgaar-icon-select">      
+                    <div class="flexrow">
+                        <div class="flexcol" id="burgsIcon">
+                            <span><b>Burgs</b></span>
+                            <img id="burgSVG" name="burgIcon" title="burg svg" src="/icons/svg/village.svg">
+                            <div class="flexrow">
+                                <input title="change burg icon color" placeholder="0"  type="checkbox" id="iconColorsBurgs" name="options.use_colors_burg"><span class="checkboxtext">Use FMG Colors?</span></input>
+                            </div>
+                        </div>
+                        <div class="flexcol" id="countriesIcon">
+                            <span><b>Countries</b></span>
+                            <img id="countrySVG" name="countryIcon" title="country svg" src="/icons/svg/castle.svg"/>
+                            <div class="flexrow">
+                                <input title="change country icon color" placeholder="0"  type="checkbox" id="iconColorsCountries" name="options.use_colors_country" checked><span class="checkboxtext">Use FMG Colors?</span></input>
+                            </div>
+                        </div>
+                        <div class="flexcol" id="provincesIcon">
+                            <span><b>Provinces</b></span>
+                            <img id="provinceSVG" name="provinceIcon" title="province svg" src="/icons/svg/tower.svg"/>
+                            <div class="flexrow">
+                                <input title="change province icon color" placeholder="0"  type="checkbox" id="iconColorsProvinces" name="options.use_colors_province" checked><span class="checkboxtext">Use FMG Colors?</span></input>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section></br>
+            <section>
+                <div id="azgaar-pin-fixer-select">
+                    <div class="flexrow">
+                        <h3>MapNote Scaling<span class="tooltip"><i class="fas fa-info-circle"></i><span class="tooltiptext right">Pin Fixer Settings </br>Minimum zoom level means that pins will be hidden BELOW this value.</br>Maximum zoom level means that pins will be hidden ABOVE this value.</span></span></h3>
+                        <button type="button" id="zoomDefaults">Reset Zoom</button>
+                    </div>
+                    </br>
+                    <div class="light-border" id="provincesScaling">
+                        <div class="centre-text">Scaling for <b>Provinces</b></div>
+                        <div class="flexrow">
+                            <div class="flexcol">
+                                <span class="slider-text" id="minZoomValueProvince">Min Zoom Level: 1</span>
+                                <input class="slider" title="change province min scaling " placeholder="0"  type="range" min="0" max="3" value="1" id="minZoomProvince" step="0.1"/>
+                            </div>
+                            <div class="flexcol">
+                                <span class="slider-text" id="maxZoomValueProvince">Max Zoom Level: 2</span>
+                                <input class="slider" title="change province max scaling" placeholder="0"  type="range" min="0" max="3" value="2" id="maxZoomProvince" step="0.1"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="light-border" id="countriesScaling">
+                        <div class="centre-text">Scaling for <b>Countries</b></div>
+                        <div class="flexrow">
+                            <div class="flexcol">
+                                <span class="slider-text" id="minZoomValueCountry">Min Zoom Level: 0.1</span>
+                                <input class="slider" title="change country min scaling" placeholder="0"  type="range" min="0" max="3" value="0.1" id="minZoomCountry" step="0.1"/>
+                            </div>
+                            <div class="flexcol">
+                                <span class="slider-text" id="maxZoomValueCountry">Max Zoom Level: 2</span>
+                                <input class="slider" title="change country max scaling" placeholder="0"  type="range" min="0" max="3" value="2" id="maxZoomCountry" step="0.1"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="light-border" id="burgsScaling">
+                        <div class="centre-text">Scaling for <b>Burgs</b></div>
+                        <div class="flexrow">
+                            <div class="flexcol">
+                                <span class="slider-text" id="minZoomValueBurg">Min Zoom Level: 2</span>
+                                <input title="change burgs min scaling" placeholder="0"  type="range" min="0" max="3" value="2" id="minZoomBurg" step="0.1"/>
+                            </div>
+                            <div class="flexcol">
+                                <span class="slider-text" id="maxZoomValueBurg">Max Zoom Level: 3</span>
+                                <input title="change burgs max scaling" placeholder="0"  type="range" min="0" max="3" value="3" id="maxZoomBurg" step="0.1"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section></br>
+        </div>
+        <div id="permissions" class="tab" data-group="primary" data-tab="permissions">
+            <section>
+                <div id="azgaar-permissions-select" class="container">
+                
+                <h3>Permissions for Journal Entries / Map Notes<span class="tooltip"><i class="fas fa-info-circle"></i><span class="tooltiptext left">More info on permissions here: <a href="https://foundryvtt.com/article/users/">User Permissions</a></span></span></h3>
+                <button type="button" id="permissionDefaults">Reset Permissions</button>
+                    </br>
+                    <div id="permission-groups" class="flexrow">
+                        <div id="provincesPermissions">
+                            <span><b>Provinces</b></span>
+                            <div class="flexrow">
+                                <ul><li><input type="radio" name="permissionProvince" id="permission0" value="0" class="hidden">
+                                    <label for="permission0" class="button-label">None</label></li>
+                                <li>
+                                    <input type="radio" name="permissionProvince" id="permission1" value="1" class="hidden">
+                                    <label for="permission1" class="button-label">Limited</label>
+                                </li>
+                                <li>
+                                    <input type="radio" name="permissionProvince" id="permission2" value="2" checked class="hidden">
+                                    <label for="permission2" class="button-label">Observer</label>
+                                </li>
+                                <li>
+                                    <input type="radio" name="permissionProvince" id="permission3" value="3" class="hidden">
+                                    <label for="permission3" class="button-label">Owner</label>
+                                </li></ul>
+                            </div>
+                        </div>
+                        <div id="countriesPermissions">
+                            <span><b>Countries</b></span>
+                            <div class="flexrow">
+                                <ul class="no-decor"><li>
+                                    <input type="radio" name="permissionCountry" id="permission4" value="0" class="hidden">
+                                    <label for="permission4" class="button-label">None</label>
+                                </li>
+                                <li>
+                                    <input type="radio" name="permissionCountry" id="permission5" value="1" class="hidden">
+                                    <label for="permission5" class="button-label">Limited</label>
+                                </li>
+                                <li>
+                                    <input type="radio" name="permissionCountry" id="permission6" value="2" checked class="hidden">
+                                    <label for="permission6" class="button-label">Observer</label>
+                                </li>
+                                <li>
+                                    <input type="radio" name="permissionCountry" id="permission7" value="3" class="hidden">
+                                    <label for="permission7" class="button-label">Owner</label>
+                                </li></ul>
+                            </div>
+                        </div>
+                        <div id="burgsPermissions">
+                        <span><b>Burgs</b></span>
+                        <div class="flexrow">
+                            <ul><li>
+                                <input type="radio" name="permissionBurg" id="permission8" value="0" class="hidden">
+                                <label for="permission8" class="button-label">None</label>
+                            </li>
+                            <li>
+                                <input type="radio" name="permissionBurg" id="permission9" value="1" class="hidden">
+                                <label for="permission9" class="button-label">Limited</label>
+                            </li>
+                            <li>
+                                <input type="radio" name="permissionBurg" id="permission10" value="2" checked class="hidden">
+                                <label for="permission10" class="button-label">Observer</label>
+                            </li>
+                            <li>
+                                <input type="radio" name="permissionBurg" id="permission11" value="3" class="hidden">
+                                <label for="permission11" class="button-label">Owner</label>
+                            </li></ul>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </section></br>
+        </div>
+    </section> 
+    <button type="submit">Import</button> 
+</form>

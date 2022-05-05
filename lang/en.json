@@ -1,0 +1,29 @@
+{
+    "azgaar": {
+        "title": "Azgaar Duplicate",
+        "description": "Duplicate Mapnote from other scene.",
+        "scene": "Scene",
+        "scenes": "Scenes",
+        "category" : "Category",
+        "country": "Country",
+        "province": "Province",
+        "burg": "Burg",
+        "countries": "Countries",
+        "provinces": "Provinces",
+        "burgs": "Burgs",
+        "general": "General",
+        "enable": {
+            "name": "Enable",
+            "desc": "Enable Azgaar Duplicate on this scene."
+        },
+        "mapnote":"Mapnote",
+        "name": "Name",
+        "filters": {
+            "name": "name",
+            "countries":"countries",
+            "provinces":"provinces",
+            "burgs": "burgs",
+            "general":"general"
+        }
+    }
+}
