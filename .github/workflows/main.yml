@@ -13,7 +13,7 @@ jobs:
       # Create a zip file with all files required by the module to add to the release
       - name: Zip Files
         working-directory: ./
-        run: zip -r ./module.zip module.json main.js LICENSE css/ lang/ templates/ images/
+        run: zip -r ./module.zip ./*
 
       # get version
       - name: Get Version
@@ -54,10 +54,10 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
-          name: Release ${{steps.get-version.outputs.version}}
+          name: Release ${{ steps.get-version.outputs.version }}
           draft: false
           prerelease: false
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: './module.json, ./module.zip'
-          tag: ${{steps.get-version.outputs.version}}
+          tag: ${{ steps.get-version.outputs.version }}
       
