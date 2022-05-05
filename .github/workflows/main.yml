@@ -10,14 +10,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    # Create a zip file with all files required by the module to add to the release
-    -run: zip -r ./module.zip module.json main.js LICENSE css/ images/ templates/ lang/ 
-
     # get part of the tag after the `v`
     - name: Extract tag version number
-      shell: bash
-      id: get-version
-      run: echo "::set-output name=version::$(node ./.github/workflows/get-version.js)"
+      id: get_version
+      uses: battila7/get-version-action@v2
 
     # # Substitute the Manifest and Download URLs in the module.json
     # - name: Substitute Manifest and Download Links For Versioned Ones
@@ -26,33 +22,38 @@ jobs:
     #   with:
     #     files: 'module.json'
     #   env:
-    #     version: ${{ steps.get-version.outputs.version }}
+    #     version: ${{steps.get_version.outputs.version-without-v}}
     #     url: https://github.com/${{github.repository}}
-    #     manifest: https://github.com/${{github.repository}}/releases/${{ steps.get-version.outputs.version }}/download/module.json
-    #     download: https://github.com/${{github.repository}}/releases/download/${{ steps.get-version.outputs.version }}/module.zip
+    #     manifest: https://github.com/${{github.repository}}/releases/latest/download/module.json
+    #     download: https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/module.zip
 
-     # Update the 'latest' release
-    - name: Create Release
-      id: create-release
+    # Create a zip file with all files required by the module to add to the release
+    - run: zip -r ./module.zip module.json main.js LICENSE css/ lang/ templates/ images/
+
+    # Create a release for this specific version
+    - name: Update Release with Files
+      id: create_version_release
       uses: ncipollo/release-action@v1
       with:
+        allowUpdates: true # Set this to false if you want to prevent updating existing releases
+        name: ${{ github.event.release.name }}
+        draft: false
+        token: ${{ secrets.GITHUB_TOKEN }}
+        artifacts: './module.json, ./module.zip'
+        tag: ${{ github.event.release.tag_name }}
+        body: ${{ github.event.release.body }}
+
+    # Update the 'latest' release
+    - name: Create Release
+      id: create_latest_release
+      uses: ncipollo/release-action@v1
+      if: endsWith(github.ref, 'master')
+      with:
         allowUpdates: true
-        name: Release ${{ steps.get-version.outputs.version }}
+        name: Latest
         draft: false
         prerelease: false
         token: ${{ secrets.GITHUB_TOKEN }}
-        artifacts: './module.zip, ./module.json'
-        tag: ${{ steps.get-version.outputs.version }}
-        
-    # # Create a release for this specific version
-    # - name: Update Release with Files
-    #   id: create_version_release
-    #   uses: ncipollo/release-action@v1.10.0
-    #   with:
-    #     allowUpdates: true # Set this to false if you want to prevent updating existing releases
-    #     name: ${{ github.event.release.name }}
-    #     draft: false
-    #     token: ${{ secrets.GITHUB_TOKEN }}
-    #     artifacts: './module.json, ./module.zip'
-    #     tag: ${{ github.event.release.tag_name }}
-    #     body: ${{ github.event.release.body }}
+        artifacts: './module.json, ./module.zip'
+        tag: latest
+        body: ${{ github.event.release.body }}
