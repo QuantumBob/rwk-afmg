@@ -2,7 +2,7 @@
     "name": "rwk-afmg",
     "title": " RWK Unofficial Azgaar's FMG Import",
     "description": "Import a map from Azgaar's Fantasy Map Generator into Foundry.",
-    "version": "This is auto replaced",
+    "version": "0.0.5",
     "minimumCoreVersion": "0.8.0",
     "compatibleCoreVersion": "9",
     "author": "Ethck & Snark (TheSnarky) + Rwk",
