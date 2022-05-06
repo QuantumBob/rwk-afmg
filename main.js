@@ -1091,9 +1091,12 @@ class AzgaarFM {
         await noteDocument.update(update);
     }
 
-    static updateLink(newLink, content, name) {
-        const oldLink = `@Compendium[${AzgaarFM.compendiumPack}.${AzgaarFM.linkJournalId}]{${name}}`;
-        return content.replace(oldLink, newLink);
+    static updateLink(id, content) {
+        // const oldLink = `@Compendium[${AzgaarFM.compendiumPack}.${AzgaarFM.linkJournalId}]{${name}}`;
+        // return content.replace(oldLink, newLink);
+        const oldLink = AzgaarFM.escapeRegExp(`@Compendium[${AzgaarFM.compendiumPack}.${AzgaarFM.linkJournalId}]`);
+        const regex = new RegExp(oldLink + '(\\{.*\\})', "g");
+        return content.replace(regex, `@JournalEntry[${id}]$1`);
     }
 
     /**
@@ -1138,12 +1141,18 @@ class AzgaarFM {
             const realDoc = await game.journal.importFromCompendium(compendium, AzgaarFM.linkJournalId, data);
             /* link to new journal */
             // [^data-id="]@Compendium\[(\w+)\.(\w+)\.(\w+)\]
-            const oldLink = `@Compendium[${AzgaarFM.compendiumPack}.${AzgaarFM.linkJournalId}]`;
-            const cp = AzgaarFM.compendiumPack.replace(".", "\\.");
-            const link = `@Compendium[${cp}\.${AzgaarFM.linkJournalId}]`
-            let re = new RegExp(link, "g");// + '(\{\\\w+\})*', "g");
-            let m = app.document.data.content.match(re);
-            let content = app.document.data.content.replace(oldLink, `@JournalEntry[${realDoc.id}]`);
+            // const oldLink = `@Compendium[${AzgaarFM.compendiumPack}.${AzgaarFM.linkJournalId}]`;
+            // const cp = AzgaarFM.compendiumPack.replace(".", "\\.");
+            // const link = `@Compendium[${cp}\.${AzgaarFM.linkJournalId}]`
+            // let re = new RegExp(link, "g");// + '(\{\\\w+\})*', "g");
+            // let m = app.document.data.content.match(re);
+            // let content = app.document.data.content.replace(oldLink, `@JournalEntry[${realDoc.id}]`);
+
+            // const oldLink = AzgaarFM.escapeRegExp(`@Compendium[${AzgaarFM.compendiumPack}.${AzgaarFM.linkJournalId}]`);
+            // var regex = new RegExp(oldLink + '(\\{.*\\})', "g");
+            // let content = app.document.data.content.replace(regex, `@JournalEntry[${realDoc.id}]$1`);
+            let content = AzgaarFM.updateLink(realDoc.id, app.document.data.content);
+
             if (content) {
                 /* update this journal */
                 await app.document.update({ content: content });
@@ -1161,8 +1170,7 @@ class AzgaarFM {
         } else if (matchedJournals.length === 1) { // needs more work
             const realDoc = matchedJournals[0];
             /* link to new journal */
-            const oldLink = `@Compendium[${AzgaarFM.compendiumPack}.${AzgaarFM.linkJournalId}](\{\w+\})*`;
-            let content = app.document.data.content.replace(oldLink, `@JournalEntry[${realDoc.id}]`);
+            let content = this.updateLink(realDoc.id, ap.document.data.content);
             if (content) {
                 /* update this journals link */
                 await app.document.update({ content: content });
@@ -1178,7 +1186,6 @@ class AzgaarFM {
         AzgaarFM.linkJournalId = undefined;
         AzgaarFM.compendiumPack = undefined;
     }
-
 
     static async openJournalEntry(journalEntry, options, userId) {
 
@@ -1282,6 +1289,10 @@ class AzgaarFM {
             // });
         }
     }
+
+    static escapeRegExp(stringToGoIntoTheRegex) {
+        return stringToGoIntoTheRegex.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    }
 }
 
 Hooks.once("libWrapper.Ready", () => {
@@ -1299,18 +1310,15 @@ Hooks.on("renderSidebarTab", async (app, html) => {
     if (app?.options?.id === "scenes" && game.user.isGM) {
         let button = $("<div class='header-actions action-buttons flexrow'><button class='rwk-import'><i class='fas fa-scroll'></i> Import AFMG Map</button></div>");
         button.on('click', () => {
-            // new LoadAzgaarMap().render(true);
-            const input = "<a class=\"link-internal 10594239-2b48-4b11-93b4-871c53ce3637\" title=\"Baker Close is a narrow brick brick cul-de-sac. It is paved with deep red bricks, some stamped with the town seal. One of the houses on the side leans concerningly far over the road. \" data-id=\"@Compendium[world.Taylensea.VA9Lm0BQ4dfirA8i]\" data-object-type=\"road\">@Compendium[world.Taylensea.VA9Lm0BQ4dfirA8i]{Baker Close}</a>"
-            let compendiumPack = "world.Taylensea";
-            const linkId = "VA9Lm0BQ4dfirA8i";
-            const newId = "1234ABCD";
-            const oldLink = `@Compendium[${compendiumPack}.${linkId}]`;
-            const cPackReplaced = compendiumPack.replace(".", "\\.");
-            const link = `@Compendium[${cPackReplaced}\.${linkId}]`;
-            let re = new RegExp(link, "g");// + '(\{\\\w+\})*', "g");
-            let m = input.match(re);
-            let content = input.replace(oldLink, `@JournalEntry[${newId}]`);
-            console.log("RWK |", content);
+            new LoadAzgaarMap().render(true);
+            // const input = "<a class=\"link-internal 10594239-2b48-4b11-93b4-871c53ce3637\" title=\"Baker Close is a narrow brick brick cul-de-sac. It is paved with deep red bricks, some stamped with the town seal. One of the houses on the side leans concerningly far over the road. \" data-id=\"@Compendium[world.Taylensea.VA9Lm0BQ4dfirA8i]\" data-object-type=\"road\">@Compendium[world.Taylensea.VA9Lm0BQ4dfirA8i]{Baker Close}</a>"
+            // let compendiumPack = "world.Taylensea";
+            // const linkId = "VA9Lm0BQ4dfirA8i";
+            // const oldLink = AzgaarFM.escapeRegExp(`@Compendium[${compendiumPack}.${linkId}]`);
+            // var regex = new RegExp(oldLink + '(\\{.*\\})', "g");
+            // const newId = "1234ABCD";
+            // let content = input.replace(regex, `@JournalEntry[${newId}]$1`);
+            // console.log("RWK |", content);
         });
         $(html).find(".directory-header").append(button);
     }
