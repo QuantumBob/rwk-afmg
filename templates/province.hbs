@@ -2,12 +2,12 @@
     <h3>{{iter.name}}</h3>
     <h4>Type: {{iter.formName}}</h4>
     <h4>Full Name: {{iter.fullName}}</h4>
-    <h4>State: @Compendium[world.Countries.{{iter.country.journal.id}}]{ {{iter.country.name}} }</h4>
+    <h4 data-id="world.Countries.{{iter.country.journal.id}}">State: @Compendium[world.Countries.{{iter.country.journal.id}}]{ {{iter.country.name}} }</h4>
     <details>
         <summary>Burgs</summary>
         <ul>
             {{#each iter.burgs}}
-                <li><span>@Compendium[world.Burgs.{{this.journal.id}}]{ {{this.name}} }</span></li>
+                <li><span data-id="world.Burgs.{{this.journal.id}}">@Compendium[world.Burgs.{{this.journal.id}}]{ {{this.name}} }</span></li>
             {{/each}}
         </ul>
     </details>

@@ -793,6 +793,25 @@ class AzgaarFM {
         };
     }
 
+    static async ready() {
+        const notesArray = canvas.notes.placeables.filter(note => {
+            if (hasProperty(note.data.flags, 'rwk-afmg') && note.entry === undefined)
+                return note;
+        });
+
+        for (const note of notesArray) {
+            const azgaarJournal = game.journal.getName("Azgaar FMG");
+            if (azgaarJournal) {
+                let data = {
+                    // entryId must be a valid journal entry (NOT from compendium, otherwise things really break.)
+                    entryId: azgaarJournal.id,
+                };
+                const cJournal = note.document.getFlag("rwk-afmg", "journal");
+                note.document.update({ entry: data, entryId: azgaarJournal.id });
+            }
+        }
+    }
+
     // onClickLeft2MapNote = Note.prototype._onClickLeft2;
     static async onClickLeft2MapNote(wrapped, ...args) {
 
@@ -1092,8 +1111,6 @@ class AzgaarFM {
     }
 
     static updateLink(id, content) {
-        // const oldLink = `@Compendium[${AzgaarFM.compendiumPack}.${AzgaarFM.linkJournalId}]{${name}}`;
-        // return content.replace(oldLink, newLink);
         const oldLink = AzgaarFM.escapeRegExp(`@Compendium[${AzgaarFM.compendiumPack}.${AzgaarFM.linkJournalId}]`);
         const regex = new RegExp(oldLink + '(\\{.*\\})', "g");
         return content.replace(regex, `@JournalEntry[${id}]$1`);
@@ -1101,8 +1118,7 @@ class AzgaarFM {
 
     /**
     * Only called if Monks Enhanced Jounal is active.
-    * All this function does for us is create a
-    * real journal if Monk opens an Azgaar one.
+    * All this function does for us is create a real journal if Monk opens an Azgaar one.
     */
     static async closeJournalSheet(app, html) {
 
@@ -1140,17 +1156,6 @@ class AzgaarFM {
             let compendium = game.packs.get(AzgaarFM.compendiumPack);
             const realDoc = await game.journal.importFromCompendium(compendium, AzgaarFM.linkJournalId, data);
             /* link to new journal */
-            // [^data-id="]@Compendium\[(\w+)\.(\w+)\.(\w+)\]
-            // const oldLink = `@Compendium[${AzgaarFM.compendiumPack}.${AzgaarFM.linkJournalId}]`;
-            // const cp = AzgaarFM.compendiumPack.replace(".", "\\.");
-            // const link = `@Compendium[${cp}\.${AzgaarFM.linkJournalId}]`
-            // let re = new RegExp(link, "g");// + '(\{\\\w+\})*', "g");
-            // let m = app.document.data.content.match(re);
-            // let content = app.document.data.content.replace(oldLink, `@JournalEntry[${realDoc.id}]`);
-
-            // const oldLink = AzgaarFM.escapeRegExp(`@Compendium[${AzgaarFM.compendiumPack}.${AzgaarFM.linkJournalId}]`);
-            // var regex = new RegExp(oldLink + '(\\{.*\\})', "g");
-            // let content = app.document.data.content.replace(regex, `@JournalEntry[${realDoc.id}]$1`);
             let content = AzgaarFM.updateLink(realDoc.id, app.document.data.content);
 
             if (content) {
@@ -1170,7 +1175,7 @@ class AzgaarFM {
         } else if (matchedJournals.length === 1) { // needs more work
             const realDoc = matchedJournals[0];
             /* link to new journal */
-            let content = this.updateLink(realDoc.id, ap.document.data.content);
+            let content = this.updateLink(realDoc.id, app.document.data.content);
             if (content) {
                 /* update this journals link */
                 await app.document.update({ content: content });
@@ -1194,7 +1199,7 @@ class AzgaarFM {
         if (note) {
             /* if journal has no sceneNote return */
             if (!journalEntry.sceneNote) return;
-            /* if note is not "Azgaar" just reutn */
+            /* if note is not "Azgaar" just return */
             if (note.entry.name !== "Azgaar FMG") return;
             /* if the journalEntry is not "Azgaar" return */
             if (journalEntry.name !== "Azgaar FMG") return;
@@ -1229,64 +1234,39 @@ class AzgaarFM {
         return true;
     }
 
-    static async renderJournalSheet(app, html, data) {
-        let content = app.object.data.content;
+    static checkLinks(journalEntry) {
 
-        // const regexp = /@JournalEntry\[(\w+)\]{(.*?)}/g;
-        // const regexp = /<a class="link-internal.*?("@Compendium\[\w+\]")@JournalEntry\[(\w+)\]{(.*?)}/g;
-        const regexp = /@Compendium\[(\w+\.\w+)\.(\w+)\].*?@JournalEntry\[(\w+)\]{(.*?)}/g
-        const journalLinks = [...content.matchAll(regexp)];
+        const linkText = `data-id="(\\w+\\.\\w+\\.\\w+)\\{.*\\}".*@JournalEntry\\[(\\w+)\]\\{.*\\}`
+        const linkText2 = `data-id="(\\w+\\.\\w+\\.\\w+)".*@JournalEntry\\[(\\w+)\]\\{.*\\}`
+        const regex = new RegExp(linkText2, "g");
+        const journalLinks = [...journalEntry.data.content.matchAll(regex)];
+        let content;
 
-        const allJournals = game.journal;
-        // journalLinks.forEach(link => {
         for (const link of journalLinks) {
-            let compendiumPack = link[1];
-            let compendiumId = link[2];
-            let journalId = link[3];
-            let journalName = link[4];
-            const journal = allJournals.get(journalId);
+            const journal = game.journal.get(link[2]);
             if (journal === undefined) {
-                /* recreate it */
-                let data = {};
-                data.flags = {
-                    "rwk-afmg": {
-                        "compendiumEntry": false,
-                        "permission": {
-                            default: AzgaarFM.burgPerm,
-                        },
-                        "journal": {
-                            "id": compendiumId,
-                            "compendium": compendiumPack,
-                        },
-                    },
-                };
-                if (compendiumPack.includes("Burgs"))
-                    mergeObject(data.flags, {
-                        "monks-enhanced-journal": {
-                            "type": 'place'
-                        },
-                    });
-                let compendium = game.packs.get(compendiumPack);
-                const realDoc = await game.journal.importFromCompendium(compendium, compendiumId, data);
+                /* need to find original compendium link to this journal */
+                const compendiumId = link[1];
+                const journalId = link[2];
+                content = journalEntry.data.content;
                 /* link to new journal */
-                const oldLink = `@JournalEntry[${journalId}]{${realDoc.name}}`;
-                content = content.replace(oldLink, realDoc.link);
-
-                if (content) {
-                    /* update this journal */
-                    await app.document.update({ content: content });
-                }
-                /* update map note */
-                const notesArray = canvas.notes.placeables.filter(note => {
-                    const cJournal = note.document.getFlag("rwk-afmg", "journal");
-                    if (note.document.data.text === realDoc.name)
-                        if (cJournal.id === compendiumId)
-                            return note;
-                });
-                if (notesArray.length === 1)
-                    notesArray[0].document.update({ entry: realDoc, entryId: realDoc.id });
+                const oldLink = `@JournalEntry[${journalId}]`;
+                const newLink = `@Compendium[${compendiumId}]`;
+                content = content.replace(oldLink, newLink);
             }
-            // });
+        }
+        return content;
+    }
+
+    static async renderJournalSheet(app, html, data) {
+
+        /* check journal for undefined links */
+        if (hasProperty(data.data.flags, 'rwk-afmg') || hasProperty(data.data.flags, 'EEEG-Importer')) {
+            let content = AzgaarFM.checkLinks(data);
+            if (content) {
+                /* update this journal */
+                await app.document.update({ content: content });
+            }
         }
     }
 
@@ -1325,6 +1305,7 @@ Hooks.on("renderSidebarTab", async (app, html) => {
 });
 
 Hooks.once("init", async (...args) => AzgaarFM.init(...args));
+Hooks.on("ready", async (...args) => AzgaarFM.ready(...args));
 Hooks.on("openJournalEntry", async (...args) => AzgaarFM.openJournalEntry(...args));
 Hooks.on("closeJournalSheet", async (...args) => AzgaarFM.closeJournalSheet(...args));
 Hooks.on("renderJournalSheet", async (...args) => AzgaarFM.renderJournalSheet(...args));
