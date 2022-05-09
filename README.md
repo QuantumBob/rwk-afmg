@@ -4,6 +4,12 @@
 
 # Unofficial Azgaar's Fantasy Map Generator Import
 
+## RWK Fork of UAFMG
+
+This is an unofficial fork of the  Unofficial Azgaar's Fantasy Map Generator Import. I have modified it to allow intergration with Monks Enhanced Journals. It will create a 'real' journal if a map note is double clicked and checks for dead links in the 'real' journal and resets the link back to the compendium. It will also check azgaar map notes on scene start for deleted map journals and resets those to the original compendium journal. Whlile this module doesn't technically need MEJ there is no point using it without MEJ.
+
+Thanks and ultimate respect must go to the original author of this moudule, Ethck [https://github.com/Ethck/azgaar-foundry].
+
 ## Important note regarding pictures from FMG
 
 In order for your map to be properly aligned you MUST export your PNG/JPEG/SVG while your browser is in FULLSCREEN mode (typically f11). Azgaar's Fantasy Map Generator will only capture what you can currently see, so make sure you see everything!

@@ -26,6 +26,10 @@
         {
             "name": "lib-wrapper",
             "type": "module"
+        },
+        {
+            "name": "monks-enhanced-journal",
+            "type": "module"
         }
     ]
 }

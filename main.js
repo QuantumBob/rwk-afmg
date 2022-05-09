@@ -1291,14 +1291,6 @@ Hooks.on("renderSidebarTab", async (app, html) => {
         let button = $("<div class='header-actions action-buttons flexrow'><button class='rwk-import'><i class='fas fa-scroll'></i> Import AFMG Map</button></div>");
         button.on('click', () => {
             new LoadAzgaarMap().render(true);
-            // const input = "<a class=\"link-internal 10594239-2b48-4b11-93b4-871c53ce3637\" title=\"Baker Close is a narrow brick brick cul-de-sac. It is paved with deep red bricks, some stamped with the town seal. One of the houses on the side leans concerningly far over the road. \" data-id=\"@Compendium[world.Taylensea.VA9Lm0BQ4dfirA8i]\" data-object-type=\"road\">@Compendium[world.Taylensea.VA9Lm0BQ4dfirA8i]{Baker Close}</a>"
-            // let compendiumPack = "world.Taylensea";
-            // const linkId = "VA9Lm0BQ4dfirA8i";
-            // const oldLink = AzgaarFM.escapeRegExp(`@Compendium[${compendiumPack}.${linkId}]`);
-            // var regex = new RegExp(oldLink + '(\\{.*\\})', "g");
-            // const newId = "1234ABCD";
-            // let content = input.replace(regex, `@JournalEntry[${newId}]$1`);
-            // console.log("RWK |", content);
         });
         $(html).find(".directory-header").append(button);
     }
